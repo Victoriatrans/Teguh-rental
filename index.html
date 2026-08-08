@@ -1,445 +1,159 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEGUH-trans - Rental Mobil</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Alpine.js untuk Interaktivitas -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <!-- FontAwesome untuk Ikon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        [x-cloak] { display: none !important; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TEGUH-trans | Rental Admin</title>
+<style>
+:root{--r:15;--g:91;--b:210;--primary:rgb(var(--r),var(--g),var(--b));--soft:rgba(var(--r),var(--g),var(--b),.10);--text:#172033;--muted:#6b7280;--bg:#f4f7fb;--card:#fff;--danger:#dc3545;--success:#16844b;--warning:#d98500}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}button{cursor:pointer;border:0}.hidden{display:none!important}
+.login{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,var(--primary),#0b1220)}
+.login-box{width:min(430px,100%);background:#fff;border-radius:28px;padding:24px;box-shadow:0 25px 70px #0005}
+.car{height:190px;border-radius:20px;background:linear-gradient(135deg,#dfe8f7,#fff);position:relative;overflow:hidden;margin-bottom:20px}
+.car:before{content:"";position:absolute;left:55px;right:55px;top:72px;height:55px;background:#f7f8fa;border:5px solid #273246;border-radius:48px 60px 18px 18px}
+.car:after{content:"";position:absolute;left:105px;top:83px;width:220px;height:32px;border-radius:8px;background:linear-gradient(90deg,#7fa2ca 0 47%,#fff 47% 53%,#7fa2ca 53%);border:2px solid #273246}
+.wheel{position:absolute;width:45px;height:45px;background:#202633;border-radius:50%;bottom:37px;border:8px solid #9aa4b4}.w1{left:88px}.w2{right:88px}
+.brand{font-size:28px;font-weight:900;text-align:center;margin:5px}.subtitle{text-align:center;color:var(--muted);margin-bottom:22px}
+.form input,.form select,.form textarea{width:100%;padding:13px 14px;border:1px solid #dbe1ea;border-radius:12px;margin:6px 0 12px;outline:none}.form input:focus,.form select:focus{border-color:var(--primary)}
+.btn{padding:12px 16px;border-radius:12px;font-weight:700}.primary{background:var(--primary);color:#fff}.secondary{background:var(--soft);color:var(--primary)}.danger{background:#fee2e2;color:#b42318}.full{width:100%}
+.app{display:flex;min-height:100vh}.side{width:250px;background:#101828;color:#fff;padding:18px;position:fixed;height:100vh;z-index:5}.side h2{margin:8px 8px 22px}.nav button{width:100%;text-align:left;background:transparent;color:#cbd5e1;padding:13px;border-radius:11px;margin:3px 0}.nav button.active,.nav button:hover{background:#ffffff18;color:#fff}.main{margin-left:250px;width:calc(100% - 250px);padding:22px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.top h1{margin:0;font-size:25px}.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}.card{background:var(--card);border-radius:17px;padding:17px;box-shadow:0 5px 20px #1d2a3d0b;border:1px solid #e9edf3}.metric{font-size:25px;font-weight:900;margin-top:9px}.label{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:15px}.section{background:#fff;border-radius:17px;padding:18px;border:1px solid #e9edf3}.section h3{margin-top:0}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:650px}.table th,.table td{padding:11px;border-bottom:1px solid #edf0f4;text-align:left;font-size:13px}.badge{display:inline-block;padding:5px 9px;border-radius:99px;font-size:12px;font-weight:700}.ok{background:#dcfce7;color:#166534}.bad{background:#fee2e2;color:#991b1b}.warn{background:#fff4cc;color:#875a00}.unit-photo{width:80px;height:55px;object-fit:cover;border-radius:9px;background:#eef2f7}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}.toolbar>*{flex:0 0 auto}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat-big{font-size:30px;font-weight:900}.empty{color:var(--muted);padding:25px;text-align:center}.mobile-menu{display:none}
+@media(max-width:1000px){.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+@media(max-width:720px){.side{display:none}.main{margin:0;width:100%;padding:14px 12px 80px}.mobile-menu{display:flex;position:fixed;bottom:12px;left:12px;right:12px;background:#101828;padding:8px;border-radius:18px;z-index:10;gap:4px;box-shadow:0 10px 30px #0004}.mobile-menu button{flex:1;background:transparent;color:#fff;font-size:11px;padding:9px 3px}.cards{grid-template-columns:repeat(2,1fr);gap:9px}.card{padding:13px}.metric{font-size:20px}.top h1{font-size:21px}.row{grid-template-columns:1fr}.login-box{padding:18px}}
+</style>
 </head>
-<body class="bg-gray-100 font-sans antialiased" 
-      x-data="teguhTransApp()" 
-      :style="`--primary-rgb: ${settings.themeRgb};`">
+<body>
 
-    <!-- ==================== HALAMAN LOGIN ==================== -->
-    <div x-show="!isLoggedIn" x-cloak class="relative min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1920&q=80');">
-        <!-- Overlay Gelap -->
-        <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+<div id="login" class="login">
+  <div class="login-box">
+    <div class="car"><span class="wheel w1"></span><span class="wheel w2"></span></div>
+    <div class="brand" id="loginBrand">TEGUH-trans</div>
+    <div class="subtitle">Panel Admin Rental</div>
+    <form id="loginForm" class="form">
+      <label>Username</label><input id="loginUser" autocomplete="username" value="teguhadmin" required>
+      <label>Kata sandi</label><input id="loginPass" type="password" autocomplete="current-password" value="teguh231100" required>
+      <button class="btn primary full">Masuk</button>
+    </form>
+    <div id="loginError" style="color:#b42318;text-align:center;margin-top:10px"></div>
+  </div>
+</div>
 
-        <div class="relative z-10 w-full max-w-md p-8 bg-white bg-opacity-95 rounded-2xl shadow-2xl backdrop-blur-md mx-4">
-            <div class="text-center mb-8">
-                <h1 class="text-3xl font-extrabold text-gray-800 tracking-wider uppercase" x-text="settings.rentalName"></h1>
-                <p class="text-sm text-gray-500 mt-1">Sistem Manajemen Rental Mobil Terpadu</p>
-                <div class="mt-3 inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">Unit Utama: Toyota Avanza Ready</div>
-            </div>
+<div id="app" class="app hidden">
+<aside class="side">
+  <h2 id="sideBrand">TEGUH-trans</h2>
+  <div class="nav">
+    <button data-page="dashboard" class="active">📊 Dasbor</button>
+    <button data-page="units">🚗 Unit</button>
+    <button data-page="schedule">📅 Jadwal</button>
+    <button data-page="finance">💰 Pembukuan</button>
+    <button data-page="settings">⚙️ Pengaturan</button>
+    <button id="logout">🚪 Keluar</button>
+  </div>
+</aside>
+<div class="mobile-menu">
+  <button data-page="dashboard">📊<br>Dasbor</button><button data-page="units">🚗<br>Unit</button>
+  <button data-page="schedule">📅<br>Jadwal</button><button data-page="finance">💰<br>Kas</button><button data-page="settings">⚙️<br>Setelan</button>
+</div>
+<main class="main">
+<div class="top"><div><h1 id="pageTitle">Dasbor</h1><small id="today"></small></div><button class="btn secondary" id="backupBtn">💾 Backup Data</button></div>
 
-            <!-- Pesan Error -->
-            <template x-if="loginError">
-                <div class="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 text-sm rounded-lg text-center" x-text="loginError"></div>
-            </template>
+<section id="dashboard" class="page">
+<div class="cards">
+ <div class="card"><div class="label">Mobil tersedia</div><div class="metric" id="mAvailable">0</div></div>
+ <div class="card"><div class="label">Sisa mobil</div><div class="metric" id="mRemaining">0</div></div>
+ <div class="card"><div class="label">Jadwal aktif</div><div class="metric" id="mSchedule">0</div></div>
+ <div class="card"><div class="label">Pemasukan</div><div class="metric" id="mIncome">Rp 0</div></div>
+ <div class="card"><div class="label">Denda</div><div class="metric" id="mFine">Rp 0</div></div>
+</div>
+<div class="grid">
+ <div class="section"><h3>Status pembayaran</h3><div id="paymentStatus"></div></div>
+ <div class="section"><h3>Total pembukuan bulan ini</h3><div class="stat-big" id="monthTotal">Rp 0</div><p class="label">Pemasukan + denda - pengeluaran</p></div>
+</div>
+<div class="section" style="margin-top:15px"><h3>Jadwal terdekat</h3><div id="dashSchedule"></div></div>
+</section>
 
-            <form @submit.prevent="handleLogin" class="space-y-6">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fa-solid fa-user"></i></span>
-                        <input type="text" x-model="loginInput.username" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan username">
-                    </div>
-                </div>
+<section id="units" class="page hidden">
+<div class="section">
+<h3>Daftar Unit</h3><div class="toolbar"><button class="btn primary" onclick="openUnit()">+ Tambah Unit</button></div>
+<div class="table-wrap"><table class="table"><thead><tr><th>Foto</th><th>Unit</th><th>Plat</th><th>Harga/hari</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="unitTable"></tbody></table></div>
+</div>
+</section>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Kata Sandi</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" x-model="loginInput.password" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan kata sandi">
-                    </div>
-                </div>
+<section id="schedule" class="page hidden">
+<div class="section">
+<h3>Jadwal Rental</h3><div class="toolbar"><button class="btn primary" onclick="openSchedule()">+ Tambah Jadwal</button></div>
+<div class="table-wrap"><table class="table"><thead><tr><th>Penyewa</th><th>Unit</th><th>Mulai</th><th>Selesai</th><th>Total</th><th>Denda</th><th>Pembayaran</th><th>Aksi</th></tr></thead><tbody id="scheduleTable"></tbody></table></div>
+</div>
+</section>
 
-                <button type="submit" class="w-full py-3 text-white font-semibold rounded-lg shadow-lg transition duration-200" :style="`background-color: rgb(${settings.themeRgb});`">
-                    Masuk ke Dasbor
-                </button>
-            </form>
-            <div class="mt-6 text-center text-xs text-gray-400">
-                &copy; 2026 TEGUH-trans. Semua Hak Dilindungi.
-            </div>
-        </div>
-    </div>
+<section id="finance" class="page hidden">
+<div class="section">
+<h3>Pembukuan</h3><div class="toolbar"><button class="btn primary" onclick="openFinance()">+ Tambah Transaksi</button><button class="btn secondary" onclick="downloadReport()">⬇ Download Laporan CSV</button></div>
+<div class="cards" style="margin-bottom:15px"><div class="card"><div class="label">Pemasukan</div><div class="metric" id="fIncome">Rp 0</div></div><div class="card"><div class="label">Denda</div><div class="metric" id="fFine">Rp 0</div></div><div class="card"><div class="label">Pengeluaran</div><div class="metric" id="fExpense">Rp 0</div></div><div class="card"><div class="label">Net bulan ini</div><div class="metric" id="fNet">Rp 0</div></div></div>
+<div class="table-wrap"><table class="table"><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Jenis</th><th>Nominal</th><th>Aksi</th></tr></thead><tbody id="financeTable"></tbody></table></div>
+</div>
+</section>
 
-    <!-- ==================== DASHBOR UTAMA ==================== -->
-    <div x-show="isLoggedIn" x-cloak class="min-h-screen flex flex-col">
-        
-        <!-- Navbar -->
-        <header class="text-white shadow-md transition-colors duration-300" :style="`background-color: rgb(${settings.themeRgb});`">
-            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                    <i class="fa-solid fa-car-side text-2xl"></i>
-                    <span class="text-xl font-bold tracking-wide" x-text="settings.rentalName"></span>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm font-medium hidden sm:inline">Halo, Admin</span>
-                    <button @click="logout" class="bg-black bg-opacity-20 hover:bg-opacity-30 px-3 py-1.5 rounded-lg text-sm transition">
-                        <i class="fa-solid fa-right-from-bracket mr-1"></i> Keluar
-                    </button>
-                </div>
-            </div>
-        </header>
+<section id="settings" class="page hidden">
+<div class="grid">
+<div class="section"><h3>Identitas Rental</h3><form id="identityForm" class="form"><label>Nama rental</label><input id="rentalName"><button class="btn primary">Simpan Nama</button></form></div>
+<div class="section"><h3>Akun Login</h3><form id="accountForm" class="form"><label>Username baru</label><input id="newUser" required><label>Kata sandi baru</label><input id="newPass" type="password" required><button class="btn primary">Simpan Akun</button></form></div>
+</div>
+<div class="section" style="margin-top:15px"><h3>Tema RGB</h3><p class="label">Atur warna utama menggunakan kombinasi RGB.</p><div class="row"><div class="form"><label>R (0–255)</label><input id="red" type="number" min="0" max="255"></div><div class="form"><label>G (0–255)</label><input id="green" type="number" min="0" max="255"></div><div class="form"><label>B (0–255)</label><input id="blue" type="number" min="0" max="255"></div><div style="display:flex;align-items:center"><button class="btn primary" onclick="saveTheme()">Terapkan Warna</button></div></div></div>
+<div class="section" style="margin-top:15px"><h3>Unit & Foto</h3><p class="label">Tambahkan jenis kendaraan, nomor polisi, harga, dan foto. Foto disimpan di penyimpanan browser.</p><button class="btn primary" onclick="openUnit()">+ Tambah Unit</button></div>
+<div class="section" style="margin-top:15px"><h3>Data Permanen</h3><p class="label">Data tersimpan di IndexedDB browser sehingga tetap ada setelah halaman ditutup. Gunakan Backup Data untuk menyimpan salinan JSON dan gunakan restore bila perlu.</p><button class="btn secondary" onclick="exportBackup()">⬇ Export Backup JSON</button> <label class="btn secondary" style="display:inline-block">⬆ Restore JSON<input type="file" id="restoreFile" accept=".json" hidden></label></div>
+</section>
+</main></div>
 
-        <!-- Layout Konten -->
-        <div class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
-            
-            <!-- Sidebar Navigasi -->
-            <aside class="md:col-span-1 bg-white p-4 rounded-xl shadow-sm h-fit space-y-2">
-                <button @click="currentTab = 'dashboard'" :class="currentTab === 'dashboard' ? 'text-white shadow' : 'text-gray-700 hover:bg-gray-100'" :style="currentTab === 'dashboard' ? `background-color: rgb(${settings.themeRgb});` : ''" class="w-full text-left px-4 py-3 rounded-lg font-medium transition flex items-center space-x-3">
-                    <i class="fa-solid fa-chart-pie w-5"></i> <span>Dasbor Utama</span>
-                </button>
-                <button @click="currentTab = 'units'" :class="currentTab === 'units' ? 'text-white shadow' : 'text-gray-700 hover:bg-gray-100'" :style="currentTab === 'units' ? `background-color: rgb(${settings.themeRgb});` : ''" class="w-full text-left px-4 py-3 rounded-lg font-medium transition flex items-center space-x-3">
-                    <i class="fa-solid fa-car w-5"></i> <span>Manajemen Unit</span>
-                </button>
-                <button @click="currentTab = 'schedule'" :class="currentTab === 'schedule' ? 'text-white shadow' : 'text-gray-700 hover:bg-gray-100'" :style="currentTab === 'schedule' ? `background-color: rgb(${settings.themeRgb});` : ''" class="w-full text-left px-4 py-3 rounded-lg font-medium transition flex items-center space-x-3">
-                    <i class="fa-solid fa-calendar-days w-5"></i> <span>Jadwal & Status</span>
-                </button>
-                <button @click="currentTab = 'settings'" :class="currentTab === 'settings' ? 'text-white shadow' : 'text-gray-700 hover:bg-gray-100'" :style="currentTab === 'settings' ? `background-color: rgb(${settings.themeRgb});` : ''" class="w-full text-left px-4 py-3 rounded-lg font-medium transition flex items-center space-x-3">
-                    <i class="fa-solid fa-gear w-5"></i> <span>Pengaturan Panel</span>
-                </button>
-            </aside>
+<div id="modal" class="hidden" style="position:fixed;inset:0;background:#0008;z-index:20;display:grid;place-items:center;padding:15px">
+<div style="background:#fff;width:min(520px,100%);max-height:92vh;overflow:auto;border-radius:20px;padding:20px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 id="modalTitle">Form</h3><button class="btn secondary" onclick="closeModal()">✕</button></div><div id="modalBody"></div></div></div>
 
-            <!-- Konten Utama (Dinamis Berdasarkan Tab) -->
-            <main class="md:col-span-3 space-y-6">
+<script>
+const DB_NAME='TEGUH_TRANS_DB', DB_VER=1;
+let db, state={settings:{name:'TEGUH-trans',username:'teguhadmin',password:'teguh231100',r:15,g:91,b:210},units:[],schedules:[],finance:[]};
 
-                <!-- 1. TAB DASBOR -->
-                <div x-show="currentTab === 'dashboard'" class="space-y-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <!-- Card 1 -->
-                        <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-blue-500">
-                            <p class="text-sm text-gray-500 font-medium">Mobil Tersedia</p>
-                            <h3 class="text-2xl font-bold text-gray-800 mt-1" x-text="totalMobilTersedia"></h3>
-                        </div>
-                        <!-- Card 2 -->
-                        <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-amber-500">
-                            <p class="text-sm text-gray-500 font-medium">Sisa Unit Disewa</p>
-                            <h3 class="text-2xl font-bold text-gray-800 mt-1" x-text="totalMobilDisewa"></h3>
-                        </div>
-                        <!-- Card 3 -->
-                        <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-emerald-500">
-                            <p class="text-sm text-gray-500 font-medium">Pemasukan Bulan Ini</p>
-                            <h3 class="text-2xl font-bold text-gray-800 mt-1" x-text="formatRupiah(totalPemasukan)"></h3>
-                        </div>
-                        <!-- Card 4 -->
-                        <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-rose-500">
-                            <p class="text-sm text-gray-500 font-medium">Total Denda & Kurang</p>
-                            <h3 class="text-2xl font-bold text-gray-800 mt-1" x-text="formatRupiah(totalDendaDanKurang)"></h3>
-                        </div>
-                    </div>
-
-                    <!-- Pembukuan Per Bulan & Aksi Download -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                            <div>
-                                <h3 class="text-lg font-bold text-gray-800">Total Pembukuan Per Bulan</h3>
-                                <p class="text-sm text-gray-500">Rekapitulasi keuangan operasional rental</p>
-                            </div>
-                            <button @click="downloadCSV" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow transition flex items-center space-x-2">
-                                <i class="fa-solid fa-download"></i> <span>Download Laporan CSV</span>
-                            </button>
-                        </div>
-
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="bg-gray-50 border-b text-gray-600 text-sm">
-                                        <th class="p-3">Bulan / Periode</th>
-                                        <th class="p-3">Total Transaksi</th>
-                                        <th class="p-3">Total Pemasukan</th>
-                                        <th class="p-3">Total Denda/Kekurangan</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-sm text-gray-700 divide-y">
-                                    <template x-for="row in financialReport" :key="row.month">
-                                        <tr>
-                                            <td class="p-3 font-semibold" x-text="row.month"></td>
-                                            <td class="p-3" x-text="row.transactions + ' Unit'"></td>
-                                            <td class="p-3 text-emerald-600 font-bold" x-text="formatRupiah(row.income)"></td>
-                                            <td class="p-3 text-rose-600 font-bold" x-text="formatRupiah(row.penalty)"></td>
-                                        </tr>
-                                    </template>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. TAB MANAJEMEN UNIT -->
-                <div x-show="currentTab === 'units'" class="space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm">
-                        <h3 class="text-lg font-bold text-gray-800 mb-4">Daftar Unit Mobil Tersedia</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <template x-for="unit in units" :key="unit.id">
-                                <div class="border rounded-xl overflow-hidden shadow-sm bg-white flex flex-col justify-between">
-                                    <img :src="unit.image" alt="Foto Mobil" class="w-full h-40 object-cover">
-                                    <div class="p-4 space-y-2">
-                                        <h4 class="font-bold text-gray-800 text-base" x-text="unit.name"></h4>
-                                        <p class="text-xs text-gray-500">Plat Nomor: <span class="font-semibold text-gray-700" x-text="unit.plate"></span></p>
-                                        <div class="flex justify-between items-center pt-2">
-                                            <span class="px-2 py-1 text-xs font-semibold rounded-full" 
-                                                  :class="unit.status === 'Tersedia' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'" 
-                                                  x-text="unit.status"></span>
-                                            <span class="text-sm font-bold text-blue-600" x-text="formatRupiah(unit.price) + '/hari'"></span>
-                                        </div>
-                                    </div>
-                                    <div class="bg-gray-50 px-4 py-2 border-t flex justify-end">
-                                        <button @click="deleteUnit(unit.id)" class="text-red-500 hover:text-red-700 text-xs font-semibold"><i class="fa-solid fa-trash mr-1"></i> Hapus Unit</button>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3. TAB JADWAL & STATUS -->
-                <div x-show="currentTab === 'schedule'" class="space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">
-                        <h3 class="text-lg font-bold text-gray-800">Jadwal Rental & Status Pembayaran</h3>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="bg-gray-50 border-b text-gray-600 text-sm">
-                                        <th class="p-3">Penyewa</th>
-                                        <th class="p-3">Mobil</th>
-                                        <th class="p-3">Jadwal Sewa</th>
-                                        <th class="p-3">Status / Keterangan</th>
-                                        <th class="p-3">Denda / Kurang</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-sm text-gray-700 divide-y">
-                                    <template x-for="item in schedules" :key="item.id">
-                                        <tr>
-                                            <td class="p-3 font-semibold" x-text="item.customer"></td>
-                                            <td class="p-3" x-text="item.carName"></td>
-                                            <td class="p-3 text-xs text-gray-500" x-text="item.startDate + ' s/d ' + item.endDate"></td>
-                                            <td class="p-3">
-                                                <span class="px-2 py-1 text-xs font-semibold rounded-full" 
-                                                      :class="item.status === 'Lunas' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'" 
-                                                      x-text="item.status"></span>
-                                            </td>
-                                            <td class="p-3 font-bold text-rose-600" x-text="formatRupiah(item.penaltyOrDebt)"></td>
-                                        </tr>
-                                    </template>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4. TAB PENGATURAN PANEL -->
-                <div x-show="currentTab === 'settings'" class="space-y-6">
-                    <!-- Pengaturan Ubah Identitas & Keamanan -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">
-                        <h3 class="text-lg font-bold text-gray-800">Pengaturan Identitas & Akun</h3>
-                        <form @submit.prevent="saveSettings" class="space-y-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Rental</label>
-                                    <input type="text" x-model="tempSettings.rentalName" required class="w-full p-2.5 border rounded-lg text-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Username Admin</label>
-                                    <input type="text" x-model="tempSettings.username" required class="w-full p-2.5 border rounded-lg text-sm">
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Kata Sandi Baru</label>
-                                    <input type="password" x-model="tempSettings.password" placeholder="Kosongkan jika tidak diubah" class="w-full p-2.5 border rounded-lg text-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Kombinasi Warna Tema (RGB)</label>
-                                    <input type="text" x-model="tempSettings.themeRgb" placeholder="Contoh: 37, 99, 235" required class="w-full p-2.5 border rounded-lg text-sm">
-                                    <p class="text-xs text-gray-400 mt-1">Format: Red, Green, Blue (0-255)</p>
-                                </div>
-                            </div>
-                            <button type="submit" class="px-5 py-2.5 text-white font-semibold rounded-lg text-sm transition" :style="`background-color: rgb(${settings.themeRgb});`">
-                                Simpan Perubahan Pengaturan
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- Pengaturan Tambah Unit Baru Beserta Foto -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">
-                        <h3 class="text-lg font-bold text-gray-800">Tambah Jenis Unit Mobil Baru</h3>
-                        <form @submit.prevent="addUnit" class="space-y-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Unit / Merek</label>
-                                    <input type="text" x-model="newUnit.name" placeholder="Contoh: Toyota Avanza Veloz" required class="w-full p-2.5 border rounded-lg text-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Plat</label>
-                                    <input type="text" x-model="newUnit.plate" placeholder="Contoh: B 1234 TEG" required class="w-full p-2.5 border rounded-lg text-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Harga Sewa per Hari (Rp)</label>
-                                    <input type="number" x-model="newUnit.price" placeholder="Contoh: 350000" required class="w-full p-2.5 border rounded-lg text-sm">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">URL Foto Mobil</label>
-                                <input type="url" x-model="newUnit.image" placeholder="https://example.com/foto-mobil.jpg" required class="w-full p-2.5 border rounded-lg text-sm">
-                                <p class="text-xs text-gray-400 mt-1">Masukkan tautan gambar langsung dari internet.</p>
-                            </div>
-                            <button type="submit" class="px-5 py-2.5 text-white font-semibold rounded-lg text-sm transition" :style="`background-color: rgb(${settings.themeRgb});`">
-                                Tambahkan Unit ke Daftar
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-            </main>
-        </div>
-    </div>
-
-    <!-- Script Logika & LocalStorage Permanen -->
-    <script>
-        function teguhTransApp() {
-            return {
-                isLoggedIn: localStorage.getItem('teguh_logged') === 'true',
-                currentTab: 'dashboard',
-                loginInput: { username: '', password: '' },
-                loginError: '',
-
-                // Data Pengaturan Utama
-                settings: JSON.parse(localStorage.getItem('teguh_settings')) || {
-                    rentalName: 'TEGUH-trans',
-                    username: 'teguhadmin',
-                    password: 'teguh231100',
-                    themeRgb: '37, 99, 235' // Default Biru
-                },
-
-                tempSettings: {
-                    rentalName: '',
-                    username: '',
-                    password: '',
-                    themeRgb: ''
-                },
-
-                // Data Unit Mobil (Permanen)
-                units: JSON.parse(localStorage.getItem('teguh_units')) || [
-                    { id: 1, name: 'Toyota Avanza G', plate: 'B 1122 TEG', status: 'Tersedia', price: 350000, image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80' },
-                    { id: 2, name: 'Toyota Avanza Veloz', plate: 'B 3344 TRANS', status: 'Disewa', price: 400000, image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80' },
-                    { id: 3, name: 'Honda Brio Satya', plate: 'B 5566 XYZ', status: 'Tersedia', price: 300000, image: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=600&q=80' }
-                ],
-
-                // Data Jadwal & Status Denda
-                schedules: [
-                    { id: 1, customer: 'Budi Santoso', carName: 'Toyota Avanza Veloz', startDate: '06 Agu 2026', endDate: '09 Agu 2026', status: 'Kekurangan Pembayaran', penaltyOrDebt: 150000 },
-                    { id: 2, customer: 'Siti Aminah', carName: 'Honda Brio Satya', startDate: '01 Agu 2026', endDate: '03 Agu 2026', status: 'Lunas', penaltyOrDebt: 0 },
-                    { id: 3, customer: 'Ahmad Dani', carName: 'Toyota Avanza G', startDate: '28 Jul 2026', endDate: '30 Jul 2026', status: 'Denda Keterlambatan', penaltyOrDebt: 100000 }
-                ],
-
-                // Data Pembukuan Keuangan Per Bulan
-                financialReport: [
-                    { month: 'Agustus 2026 (Berjalan)', transactions: 8, income: 4500000, penalty: 150000 },
-                    { month: 'Juli 2026', transactions: 14, income: 7200000, penalty: 250000 },
-                    { month: 'Juni 2026', transactions: 12, income: 6100000, penalty: 50000 }
-                ],
-
-                newUnit: { name: '', plate: '', price: '', image: '', status: 'Tersedia' },
-
-                init() {
-                    // Salin nilai setting ke form sementara
-                    this.tempSettings = { ...this.settings };
-                    this.tempSettings.password = ''; // Kosongkan password di form
-                },
-
-                handleLogin() {
-                    if (this.loginInput.username === this.settings.username && this.loginInput.password === this.settings.password) {
-                        this.isLoggedIn = true;
-                        localStorage.setItem('teguh_logged', 'true');
-                        this.loginError = '';
-                    } else {
-                        this.loginError = 'Username atau kata sandi salah!';
-                    }
-                },
-
-                logout() {
-                    this.isLoggedIn = false;
-                    localStorage.removeItem('teguh_logged');
-                    this.loginInput.username = '';
-                    this.loginInput.password = '';
-                },
-
-                addUnit() {
-                    const newId = this.units.length > 0 ? Math.max(...this.units.map(u => u.id)) + 1 : 1;
-                    this.units.push({
-                        id: newId,
-                        name: this.newUnit.name,
-                        plate: this.newUnit.plate,
-                        price: Number(this.newUnit.price),
-                        image: this.newUnit.image,
-                        status: 'Tersedia'
-                    });
-                    this.saveUnitsToStorage();
-                    // Reset form
-                    this.newUnit = { name: '', plate: '', price: '', image: '', status: 'Tersedia' };
-                    alert('Unit mobil berhasil ditambahkan!');
-                },
-
-                deleteUnit(id) {
-                    if (confirm('Apakah Anda yakin ingin menghapus unit ini?')) {
-                        this.units = this.units.filter(u => u.id !== id);
-                        this.saveUnitsToStorage();
-                    }
-                },
-
-                saveUnitsToStorage() {
-                    localStorage.setItem('teguh_units', JSON.stringify(this.units));
-                },
-
-                saveSettings() {
-                    this.settings.rentalName = this.tempSettings.rentalName;
-                    this.settings.username = this.tempSettings.username;
-                    if (this.tempSettings.password.trim() !== '') {
-                        this.settings.password = this.tempSettings.password;
-                    }
-                    this.settings.themeRgb = this.tempSettings.themeRgb;
-
-                    localStorage.setItem('teguh_settings', JSON.stringify(this.settings));
-                    alert('Pengaturan berhasil diperbarui!');
-                },
-
-                // Getter Komputasi Dasbor
-                get totalMobilTersedia() {
-                    return this.units.filter(u => u.status === 'Tersedia').length;
-                },
-
-                get totalMobilDisewa() {
-                    return this.units.filter(u => u.status === 'Disewa').length;
-                },
-
-                get totalPemasukan() {
-                    return this.financialReport.reduce((acc, curr) => acc + curr.income, 0);
-                },
-
-                get totalDendaDanKurang() {
-                    return this.financialReport.reduce((acc, curr) => acc + curr.penalty, 0);
-                },
-
-                formatRupiah(value) {
-                    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(value);
-                },
-
-                downloadCSV() {
-                    let csvContent = "data:text/csv;charset=utf-8,Bulan,Total Transaksi,Total Pemasukan,Total Denda/Kekurangan\n";
-                    this.financialReport.forEach(row => {
-                        csvContent += `"${row.month}",${row.transactions},${row.income},${row.penalty}\n`;
-                    });
-
-                    const encodedUri = encodeURI(csvContent);
-                    const link = document.createElement("a");
-                    link.setAttribute("href", encodedUri);
-                    link.setAttribute("download", "Laporan_Pembukuan_TEGUH_trans.csv");
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                }
-            }
-        }
-    </script>
+function openDB(){return new Promise((res,rej)=>{let r=indexedDB.open(DB_NAME,DB_VER);r.onupgradeneeded=e=>{let d=e.target.result;['settings','units','schedules','finance'].forEach(s=>{if(!d.objectStoreNames.contains(s))d.createObjectStore(s,{keyPath:'id',autoIncrement:true})});};r.onsuccess=()=>{db=r.result;res()};r.onerror=()=>rej(r.error)})}
+function tx(store,mode='readonly'){return db.transaction(store,mode).objectStore(store)}
+function getAll(store){return new Promise((res,rej)=>{let r=tx(store).getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function put(store,obj){return new Promise((res,rej)=>{let r=tx(store,'readwrite').put(obj);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function del(store,id){return new Promise((res,rej)=>{let r=tx(store,'readwrite').delete(id);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+async function load(){await openDB();let s=await getAll('settings'); if(s[0]) state.settings=s[0]; else await put('settings',state.settings);state.units=await getAll('units');state.schedules=await getAll('schedules');state.finance=await getAll('finance');applySettings()}
+function applySettings(){document.documentElement.style.setProperty('--r',state.settings.r);document.documentElement.style.setProperty('--g',state.settings.g);document.documentElement.style.setProperty('--b',state.settings.b);document.getElementById('loginBrand').textContent=state.settings.name;document.getElementById('sideBrand').textContent=state.settings.name;document.title=state.settings.name+' | Rental Admin'}
+const money=n=>new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(n)||0);
+const dateFmt=x=>x?new Date(x+'T00:00:00').toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}):'-';
+function currentMonth(){return new Date().toISOString().slice(0,7)}
+function calc(){let today=new Date().toISOString().slice(0,10), active=state.schedules.filter(x=>x.start<=today&&x.end>=today);let available=state.units.filter(u=>u.status!=='maintenance').length, rented=new Set(active.map(x=>x.unitId)).size;let month=currentMonth(), fin=state.finance.filter(x=>x.date?.startsWith(month));let income=fin.filter(x=>x.type==='income').reduce((a,x)=>a+Number(x.amount),0),fine=fin.filter(x=>x.type==='fine').reduce((a,x)=>a+Number(x.amount),0),expense=fin.filter(x=>x.type==='expense').reduce((a,x)=>a+Number(x.amount),0);return{available,rented,remaining:Math.max(0,available-rented),active,month,income,fine,expense,net:income+fine-expense}}
+function render(){let c=calc();mAvailable.textContent=c.available;mRemaining.textContent=c.remaining;mSchedule.textContent=c.active.length;mIncome.textContent=money(c.income);mFine.textContent=money(c.fine);monthTotal.textContent=money(c.net);fIncome.textContent=money(c.income);fFine.textContent=money(c.fine);fExpense.textContent=money(c.expense);fNet.textContent=money(c.net);
+paymentStatus.innerHTML=state.schedules.length?state.schedules.map(s=>`<p><b>${esc(s.tenant)}</b> — ${money(s.paid)} / ${money(s.total)} ${s.paid>=s.total?'<span class="badge ok">Lunas</span>':'<span class="badge bad">Kekurangan '+money(s.total-s.paid)+'</span>'}${Number(s.fine)>0?' <span class="badge warn">Denda '+money(s.fine)+'</span>':''}</p>`).join(''):'<div class="empty">Belum ada transaksi rental.</div>';
+dashSchedule.innerHTML=state.schedules.slice().sort((a,b)=>a.start.localeCompare(b.start)).slice(0,6).map(s=>`<p><b>${dateFmt(s.start)}</b> — ${esc(s.tenant)} — ${unitName(s.unitId)} <span class="badge ${s.paid>=s.total?'ok':'bad'}">${s.paid>=s.total?'Lunas':'Belum lunas'}</span></p>`).join('')||'<div class="empty">Belum ada jadwal.</div>';
+unitTable.innerHTML=state.units.map(u=>`<tr><td>${u.photo?`<img class="unit-photo" src="${u.photo}">`:'—'}</td><td><b>${esc(u.name)}</b></td><td>${esc(u.plate||'-')}</td><td>${money(u.price)}</td><td><span class="badge ${u.status==='ready'?'ok':'warn'}">${u.status==='ready'?'Tersedia':'Perawatan'}</span></td><td><button class="btn secondary" onclick="editUnit(${u.id})">Edit</button> <button class="btn danger" onclick="removeUnit(${u.id})">Hapus</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">Belum ada unit.</td></tr>';
+scheduleTable.innerHTML=state.schedules.map(s=>`<tr><td>${esc(s.tenant)}</td><td>${unitName(s.unitId)}</td><td>${dateFmt(s.start)}</td><td>${dateFmt(s.end)}</td><td>${money(s.total)}</td><td>${money(s.fine)}</td><td>${s.paid>=s.total?'<span class="badge ok">Lunas</span>':'<span class="badge bad">Kurang '+money(s.total-s.paid)+'</span>'}</td><td><button class="btn secondary" onclick="editSchedule(${s.id})">Edit</button> <button class="btn danger" onclick="removeSchedule(${s.id})">Hapus</button></td></tr>`).join('')||'<tr><td colspan="8" class="empty">Belum ada jadwal.</td></tr>';
+financeTable.innerHTML=state.finance.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(f=>`<tr><td>${dateFmt(f.date)}</td><td>${esc(f.note)}</td><td>${f.type}</td><td>${money(f.amount)}</td><td><button class="btn danger" onclick="removeFinance(${f.id})">Hapus</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">Belum ada transaksi.</td></tr>';
+}
+function unitName(id){return state.units.find(u=>u.id==id)?.name||'Unit dihapus'}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function openModal(title,body){modalTitle.textContent=title;modalBody.innerHTML=body;modal.classList.remove('hidden')}
+function closeModal(){modal.classList.add('hidden')}
+function openUnit(id=null){let u=state.units.find(x=>x.id===id)||{name:'Avanza',plate:'',price:0,status:'ready',photo:''};openModal(id?'Edit Unit':'Tambah Unit',`<form id="unitForm" class="form"><label>Jenis unit</label><input id="uName" value="${esc(u.name)}" required><label>Nomor polisi</label><input id="uPlate" value="${esc(u.plate)}"><label>Harga sewa / hari</label><input id="uPrice" type="number" value="${u.price}" required><label>Status</label><select id="uStatus"><option value="ready" ${u.status==='ready'?'selected':''}>Tersedia</option><option value="maintenance" ${u.status==='maintenance'?'selected':''}>Perawatan</option></select><label>Foto unit</label><input id="uPhoto" type="file" accept="image/*"><div id="photoPreview">${u.photo?`<img class="unit-photo" src="${u.photo}">`:''}</div><br><button class="btn primary full">Simpan</button></form>`);unitForm.onsubmit=async e=>{e.preventDefault();let photo=u.photo, f=uPhoto.files[0];if(f)photo=await readFile(f);let obj={id:id||undefined,name:uName.value,plate:uPlate.value,price:Number(uPrice.value),status:uStatus.value,photo};await put('units',obj);state.units=await getAll('units');closeModal();render()}}
+function readFile(f){return new Promise((res,rej)=>{let r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)})}
+function editUnit(id){openUnit(id)} async function removeUnit(id){if(confirm('Hapus unit ini?')){await del('units',id);state.units=await getAll('units');render()}}
+function openSchedule(id=null){let s=state.schedules.find(x=>x.id===id)||{tenant:'',phone:'',unitId:state.units[0]?.id||'',start:new Date().toISOString().slice(0,10),end:new Date().toISOString().slice(0,10),total:0,paid:0,fine:0};openModal(id?'Edit Jadwal':'Tambah Jadwal',`<form id="schForm" class="form"><label>Nama penyewa</label><input id="sTenant" value="${esc(s.tenant)}" required><label>No. HP</label><input id="sPhone" value="${esc(s.phone)}"><label>Unit</label><select id="sUnit">${state.units.map(u=>`<option value="${u.id}" ${u.id==s.unitId?'selected':''}>${esc(u.name)} - ${esc(u.plate)}</option>`).join('')}</select><div class="row"><div><label>Mulai</label><input id="sStart" type="date" value="${s.start}" required></div><div><label>Selesai</label><input id="sEnd" type="date" value="${s.end}" required></div></div><div class="row"><div><label>Total sewa</label><input id="sTotal" type="number" value="${s.total}" required></div><div><label>Sudah dibayar</label><input id="sPaid" type="number" value="${s.paid}"></div></div><label>Denda</label><input id="sFine" type="number" value="${s.fine}"><button class="btn primary full">Simpan Jadwal</button></form>`);schForm.onsubmit=async e=>{e.preventDefault();let obj={id:id||undefined,tenant:sTenant.value,phone:sPhone.value,unitId:Number(sUnit.value),start:sStart.value,end:sEnd.value,total:Number(sTotal.value),paid:Number(sPaid.value),fine:Number(sFine.value)};await put('schedules',obj);state.schedules=await getAll('schedules');closeModal();render()}}
+function editSchedule(id){openSchedule(id)}async function removeSchedule(id){if(confirm('Hapus jadwal?')){await del('schedules',id);state.schedules=await getAll('schedules');render()}}
+function openFinance(){openModal('Tambah Transaksi',`<form id="finForm" class="form"><label>Tanggal</label><input id="fDate" type="date" value="${new Date().toISOString().slice(0,10)}" required><label>Keterangan</label><input id="fNote" required placeholder="Contoh: DP sewa Avanza"><label>Jenis</label><select id="fType"><option value="income">Pemasukan</option><option value="fine">Denda</option><option value="expense">Pengeluaran</option></select><label>Nominal</label><input id="fAmount" type="number" required><button class="btn primary full">Simpan</button></form>`);finForm.onsubmit=async e=>{e.preventDefault();await put('finance',{date:fDate.value,note:fNote.value,type:fType.value,amount:Number(fAmount.value)});state.finance=await getAll('finance');closeModal();render()}}
+async function removeFinance(id){if(confirm('Hapus transaksi?')){await del('finance',id);state.finance=await getAll('finance');render()}}
+function saveTheme(){state.settings.r=Math.max(0,Math.min(255,Number(red.value)));state.settings.g=Math.max(0,Math.min(255,Number(green.value)));state.settings.b=Math.max(0,Math.min(255,Number(blue.value)));put('settings',state.settings).then(()=>{applySettings();alert('Warna tema tersimpan.')})}
+identityForm.onsubmit=async e=>{e.preventDefault();state.settings.name=rentalName.value.trim()||'TEGUH-trans';await put('settings',state.settings);applySettings();alert('Nama rental tersimpan.')}
+accountForm.onsubmit=async e=>{e.preventDefault();state.settings.username=newUser.value.trim();state.settings.password=newPass.value;await put('settings',state.settings);alert('Username dan kata sandi berhasil diubah.')}
+function exportBackup(){let data=JSON.stringify(state,null,2),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));a.download='TEGUH-trans-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click()}
+function downloadReport(){let rows=[['Tanggal','Keterangan','Jenis','Nominal'],...state.finance.map(f=>[f.date,f.note,f.type,f.amount])];let csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='laporan-pembukuan-TEGUH-trans-'+currentMonth()+'.csv';a.click()}
+restoreFile.onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(d.settings){state.settings=d.settings;await put('settings',state.settings)}for(let u of (d.units||[])){let z={...u};delete z.id;await put('units',z)}for(let s of (d.schedules||[])){let z={...s};delete z.id;await put('schedules',z)}for(let x of (d.finance||[])){let z={...x};delete z.id;await put('finance',z)}await load();render();alert('Backup berhasil dipulihkan.')}catch(err){alert('File backup tidak valid.')}};
+backupBtn.onclick=exportBackup;
+document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));document.getElementById(p).classList.remove('hidden');document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===p));pageTitle.textContent={dashboard:'Dasbor',units:'Unit Kendaraan',schedule:'Jadwal Rental',finance:'Pembukuan',settings:'Pengaturan'}[p];if(p==='settings'){rentalName.value=state.settings.name;newUser.value=state.settings.username;newPass.value=state.settings.password;red.value=state.settings.r;green.value=state.settings.g;blue.value=state.settings.b}}
+loginForm.onsubmit=e=>{e.preventDefault();if(loginUser.value===state.settings.username&&loginPass.value===state.settings.password){login.classList.add('hidden');app.classList.remove('hidden');sessionStorage.setItem('teguhLogin','1');render()}else loginError.textContent='Username atau kata sandi salah.'}
+logout.onclick=()=>{sessionStorage.removeItem('teguhLogin');app.classList.add('hidden');login.classList.remove('hidden')}
+today.textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+(async()=>{await load();if(sessionStorage.getItem('teguhLogin')==='1'){login.classList.add('hidden');app.classList.remove('hidden')}render()})();
+</script>
 </body>
 </html>
