@@ -1,297 +1,619 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title id="pageTitle">TEGUH RENTAL</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#1f2937}
-header{background:#111827;color:white;padding:16px 18px;position:sticky;top:0;z-index:5}
-header h1{margin:0;font-size:21px}.wrap{max-width:1100px;margin:auto;padding:16px}
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
-.card{background:white;border-radius:14px;padding:16px;box-shadow:0 2px 10px #0000000d}.card b{display:block;font-size:24px;margin-top:6px}
-nav{display:flex;gap:8px;overflow:auto;margin-bottom:15px}nav button{border:0;background:white;padding:11px 15px;border-radius:10px;white-space:nowrap;font-weight:bold}
-nav button.active{background:#111827;color:white}
-section{display:none}.active-sec{display:block}.panel{background:white;padding:18px;border-radius:14px;box-shadow:0 2px 10px #0000000d;margin-bottom:15px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}label{font-size:13px;font-weight:bold}input,select{width:100%;padding:11px;margin-top:6px;border:1px solid #d1d5db;border-radius:9px}
-.btn{border:0;border-radius:9px;padding:11px 15px;font-weight:bold;cursor:pointer}.primary{background:#111827;color:#fff}.danger{background:#fee2e2;color:#991b1b}.success{background:#dcfce7;color:#166534}
-table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid #eee;text-align:left;font-size:13px}
-.badge{padding:5px 8px;border-radius:99px;font-size:11px;font-weight:bold;background:#e5e7eb}
-@media(max-width:700px){.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}table{display:block;overflow:auto;white-space:nowrap}}
-
-.login{position:fixed;inset:0;background:#111827;display:flex;align-items:center;justify-content:center;z-index:99;padding:20px}
-.login-box{background:white;width:100%;max-width:380px;border-radius:18px;padding:25px;box-shadow:0 20px 60px #0006}
-.login-box h2{margin-top:0}.login-box input{margin-bottom:12px}.login-error{color:#b91c1c;font-size:13px;min-height:18px}
-#app{display:none}
-
-:root{--theme:#111827;--theme2:#374151}
-header{background:var(--theme)!important}
-nav button.active,.primary{background:var(--theme)!important}
-.theme-preview{height:45px;border-radius:10px;margin-top:8px;border:1px solid #ddd}
-
-.hero{background:linear-gradient(135deg,var(--c1,#111827),var(--c2,#374151));color:white;border-radius:18px;padding:24px;margin-bottom:15px;min-height:170px;display:flex;align-items:end;position:relative;overflow:hidden}
-.hero:after{content:'🚗';position:absolute;right:25px;bottom:-18px;font-size:130px;opacity:.18}.hero h2{margin:0 0 6px;font-size:28px}.hero p{margin:0;opacity:.85}
-.color-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.color-box{background:#fff;padding:12px;border:1px solid #eee;border-radius:10px}.color-box input{height:45px;padding:3px}
-.schedule-overdue{background:#fee2e2;color:#991b1b}.schedule-ok{background:#dcfce7;color:#166534}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental TEGUH-trans</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --theme-r: 37;
+            --theme-g: 99;
+            --theme-b: 235;
+        }
+        .bg-theme { background-color: rgb(var(--theme-r), var(--theme-g), var(--theme-b)); }
+        .text-theme { color: rgb(var(--theme-r), var(--theme-g), var(--theme-b)); }
+        .border-theme { border-color: rgb(var(--theme-r), var(--theme-g), var(--theme-b)); }
+    </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800 font-sans">
 
-<div id="login" class="login">
- <div class="login-box">
-  <h2>🔐 Admin Rental</h2>
-  <p>Silakan login untuk masuk ke aplikasi.</p>
-  <label>Username</label><input id="loginUser" autocomplete="username" placeholder="Username">
-  <label>Password</label><input id="loginPass" type="password" autocomplete="current-password" placeholder="Password">
-  <div class="login-error" id="loginError"></div>
-  <button class="btn primary" style="width:100%" onclick="login()">Login</button>
-  <p style="font-size:12px;color:#6b7280">Data rental tersimpan di perangkat/browser dan tetap ada setelah logout.</p>
- </div>
-</div>
-<div id="app">
-<header><div class="wrap"><h1>🚗 <span id="brandName">TEGUH RENTAL</span> <button class="btn" style="float:right;background:#fff" onclick="logout()">Keluar</button></h1></div></header>
-<div class="wrap">
-<nav>
-<button class="active" onclick="showTab('dashboard',this)">Dashboard</button>
-<button onclick="showTab('rental',this)">Data Rental</button>
-<button onclick="showTab('kendaraan',this)">Kendaraan</button>
-<button onclick="showTab('pelanggan',this)">Pelanggan</button><button onclick="showTab('jadwal',this)">📅 Jadwal</button><button onclick="showTab('pengaturan',this)">⚙️ Pengaturan</button>
-</nav>
+    <!-- Halaman Login -->
+    <div id="loginPage" class="fixed inset-0 bg-gray-900 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
+            <div class="text-center mb-8">
+                <h1 id="loginBrandTitle" class="text-3xl font-black text-theme">TEGUH-trans</h1>
+                <p class="text-gray-500 text-sm mt-1">Silakan masuk ke panel admin rental</p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Username</label>
+                    <input type="text" id="loginUser" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 border-theme">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Kata Sandi</label>
+                    <input type="password" id="loginPass" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 border-theme">
+                </div>
+                <button type="submit" class="w-full py-3 bg-theme text-white font-bold rounded-lg shadow-md transition hover:opacity-90">Masuk</button>
+            </form>
+        </div>
+    </div>
 
-<section id="dashboard" class="active-sec">
-<div class="hero"><div><h2 id="dashTitle">TEGUH RENTAL</h2><p>Dashboard manajemen rental kendaraan pribadi</p></div></div>
-<div class="cards">
-<div class="card">Total Kendaraan<b id="totalK">0</b></div>
-<div class="card">Sedang Rental<b id="totalR">0</b></div>
-<div class="card">Pelanggan<b id="totalP">0</b></div>
-<div class="card">Pendapatan<b id="income">Rp 0</b></div>
-</div>
-<div class="panel"><h3>Ringkasan Rental</h3><div id="summary">Belum ada data rental.</div></div>
-</section>
+    <!-- Layout Utama -->
+    <div id="appLayout" class="flex h-screen overflow-hidden hidden">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white border-r flex flex-col justify-between">
+            <div>
+                <div class="p-6 border-b">
+                    <h2 id="sidebarBrandName" class="text-xl font-black text-theme truncate">TEGUH-trans</h2>
+                    <p class="text-xs text-gray-400 mt-0.5">Sistem Manajemen Rental</p>
+                </div>
+                <nav class="p-4 space-y-1">
+                    <button onclick="switchTab('dashboard')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition active-tab">
+                        <i class="fa-solid fa-chart-pie w-5"></i> Dasbor
+                    </button>
+                    <button onclick="switchTab('transaksi')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">
+                        <i class="fa-solid fa-file-invoice-dollar w-5"></i> Transaksi & Denda
+                    </button>
+                    <button onclick="switchTab('unit')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">
+                        <i class="fa-solid fa-car w-5"></i> Kelola Unit
+                    </button>
+                    <button onclick="switchTab('pengaturan')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">
+                        <i class="fa-solid fa-gear w-5"></i> Pengaturan
+                    </button>
+                </nav>
+            </div>
+            <div class="p-4 border-t">
+                <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-2 text-red-600 font-medium rounded-lg hover:bg-red-50 transition">
+                    <i class="fa-solid fa-right-from-bracket w-5"></i> Keluar
+                </button>
+            </div>
+        </aside>
 
-<section id="rental">
-<div class="panel"><h3>Tambah Rental</h3>
-<div class="grid">
-<div><label>Nama pelanggan</label><input id="rNama" placeholder="Nama pelanggan"></div>
-<div><label>Kendaraan</label><input id="rKend" placeholder="Contoh: Avanza 2023"></div>
-<div><label>Tanggal mulai</label><input id="rMulai" type="date"></div>
-<div><label>Tanggal selesai</label><input id="rSelesai" type="date"></div>
-<div><label>Total harga</label><input id="rHarga" type="number" placeholder="Contoh: 350000"></div>
-<div><label>Status</label><select id="rStatus"><option>Booking</option><option>Berjalan</option><option>Selesai</option></select></div>
-</div><br><button class="btn primary" onclick="addRental()">+ Simpan Rental</button>
-</div>
-<div class="panel"><h3>Daftar Rental</h3><div id="rentalTable"></div></div>
-</section>
+        <!-- Konten Utama -->
+        <main class="flex-1 overflow-y-auto p-8">
+            
+            <!-- TAB: DASBOR -->
+            <section id="tab-dashboard" class="space-y-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold">Dasbor Utama</h2>
+                    <span id="currentDate" class="text-sm text-gray-500 font-medium"></span>
+                </div>
 
-<section id="kendaraan">
-<div class="panel"><h3 id="kendTitle">Tambah Unit Rental</h3>
-<input id="kEdit" type="hidden" value="-">
-<div class="grid">
-<div><label>Nama kendaraan</label><input id="kNama" placeholder="Toyota Avanza"></div>
-<div><label>Nomor polisi</label><input id="kPlat" placeholder="AA 1234 XX"></div>
-<div><label>Tahun</label><input id="kTahun" type="number" placeholder="2023"></div>
-<div><label>Harga sewa / hari</label><input id="kHarga" type="number" placeholder="350000"></div>
-<div><label>Foto mobil</label><input id="kFoto" type="file" accept="image/*" onchange="previewFoto(event)"></div>
-<div><label>Preview</label><img id="fotoPreview" style="width:100%;height:120px;object-fit:cover;border-radius:10px;background:#eee;display:block"></div>
-</div><br>
-<button class="btn primary" onclick="saveKend()">💾 Simpan Unit</button>
-<button class="btn" onclick="resetKend()" style="background:#e5e7eb">Batal</button>
-</div>
-<div class="panel"><h3>Daftar Unit Rental</h3><div id="kendTable"></div></div>
-</section>
+                <!-- Kartu Statistik -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-xl border shadow-sm">
+                        <p class="text-sm text-gray-500 font-medium">Mobil Tersedia</p>
+                        <h3 id="statMobilTersedia" class="text-3xl font-black mt-2 text-green-600">0</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border shadow-sm">
+                        <p class="text-sm text-gray-500 font-medium">Sisa Mobil (Disewa)</p>
+                        <h3 id="statSisaMobil" class="text-3xl font-black mt-2 text-amber-500">0</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border shadow-sm">
+                        <p class="text-sm text-gray-500 font-medium">Total Pemasukan Bulan Ini</p>
+                        <h3 id="statPemasukan" class="text-2xl font-black mt-2 text-theme">Rp 0</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border shadow-sm">
+                        <p class="text-sm text-gray-500 font-medium">Total Denda / Kekurangan</p>
+                        <h3 id="statDendaKekurangan" class="text-2xl font-black mt-2 text-red-600">Rp 0</h3>
+                    </div>
+                </div>
 
-<section id="pelanggan">
-<div class="panel"><h3>Tambah Pelanggan</h3>
-<div class="grid"><div><label>Nama</label><input id="pNama"></div><div><label>No. WhatsApp</label><input id="pWa"></div></div><br>
-<button class="btn primary" onclick="addPel()">+ Simpan Pelanggan</button>
-</div><div class="panel"><div id="pelTable"></div></div>
-</section>
+                <!-- Jadwal Rental Aktif -->
+                <div class="bg-white rounded-xl border shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Jadwal & Status Rental Aktif</h3>
+                        <button onclick="openModalTransaksi()" class="px-4 py-2 bg-theme text-white text-sm font-bold rounded-lg shadow hover:opacity-90 transition">+ Tambah Transaksi/Jadwal</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b text-xs uppercase text-gray-400 bg-gray-50">
+                                    <th class="p-3">Penyewa</th>
+                                    <th class="p-3">Unit Mobil</th>
+                                    <th class="p-3">Jadwal (Mulai - Selesai)</th>
+                                    <th class="p-3">Status / Keterangan</th>
+                                    <th class="p-3">Sisa / Denda</th>
+                                    <th class="p-3">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableJadwalBody" class="text-sm divide-y">
+                                <!-- Data dinamis -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
 
+            <!-- TAB: TRANSAKSI & PEMBUKUAN -->
+            <section id="tab-transaksi" class="space-y-6 hidden">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold">Pembukuan & Keuangan Per Bulan</h2>
+                    <button onclick="downloadLaporan()" class="px-4 py-2 bg-emerald-600 text-white text-sm font-bold rounded-lg shadow hover:bg-emerald-700 transition flex items-center gap-2">
+                        <i class="fa-solid fa-download"></i> Unduh Laporan (CSV)
+                    </button>
+                </div>
 
-<section id="jadwal">
-<div class="panel"><h3>📅 Jadwal Rental & Denda</h3>
-<div class="grid">
-<div><label>Pelanggan</label><input id="sNama" placeholder="Nama pelanggan"></div>
-<div><label>Kendaraan</label><input id="sKend" placeholder="Nama kendaraan"></div>
-<div><label>Tanggal mulai</label><input id="sMulai" type="date"></div>
-<div><label>Tanggal kembali</label><input id="sKembali" type="date"></div>
-<div><label>Harga sewa / hari</label><input id="sHarga" type="number" placeholder="350000"></div>
-<div><label>Denda keterlambatan / hari</label><input id="sDenda" type="number" placeholder="50000"></div>
-</div><br><button class="btn primary" onclick="addSchedule()">+ Simpan Jadwal</button>
-</div>
-<div class="panel"><div id="scheduleTable"></div></div>
-</section>
-<section id="pengaturan">
-<div class="panel"><h3>⚙️ Pengaturan Login</h3>
-<p>Ubah username, password, nama aplikasi, dan tema di sini.</p>
-<hr><h3>🎨 Nama & Tema Aplikasi</h3>
-<div class="grid">
-<div><label>Nama aplikasi</label><input id="appNameInput" placeholder="TEGUH RENTAL"></div>
-</div>
-<br><div class="color-row">
-<div class="color-box"><label>Warna 1</label><input id="color1" type="color" value="#111827"></div>
-<div class="color-box"><label>Warna 2</label><input id="color2" type="color" value="#374151"></div>
-<div class="color-box"><label>Warna 3</label><input id="color3" type="color" value="#2563eb"></div>
-</div><br>
-<button class="btn primary" onclick="saveAppearance()">💾 Simpan Nama & Tema</button>
+                <div class="bg-white rounded-xl border shadow-sm p-6">
+                    <h3 class="text-lg font-bold mb-4">Rekapitulasi Riwayat Transaksi</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b text-xs uppercase text-gray-400 bg-gray-50">
+                                    <th class="p-3">Tanggal</th>
+                                    <th class="p-3">Penyewa</th>
+                                    <th class="p-3">Unit</th>
+                                    <th class="p-3">Biaya Sewa</th>
+                                    <th class="p-3">Denda / Kekurangan</th>
+                                    <th class="p-3">Status Bayar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablePembukuanBody" class="text-sm divide-y">
+                                <!-- Data dinamis -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
 
-<div class="grid">
-<div><label>Username baru</label><input id="newUser" placeholder="Username baru"></div>
-<div><label>Password baru</label><input id="newPass" type="password" placeholder="Password baru"></div>
-</div><br>
-<button class="btn primary" onclick="changeCredentials()">💾 Simpan Perubahan</button>
-<div id="credMsg" style="margin-top:12px;font-size:13px"></div>
+            <!-- TAB: KELOLA UNIT -->
+            <section id="tab-unit" class="space-y-6 hidden">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold">Kelola Jenis Unit Mobil</h2>
+                    <button onclick="openModalUnit()" class="px-4 py-2 bg-theme text-white text-sm font-bold rounded-lg shadow hover:opacity-90 transition">+ Tambah Unit Baru</button>
+                </div>
 
-<div class="panel"><h3>🏷️ Nama Rental & Tema</h3>
-<div class="grid">
-<div><label>Nama rental</label><input id="rentalName" placeholder="TEGUH RENTAL"></div>
-<div><label>Warna utama RGB</label><input id="rgbMain" placeholder="17,24,39"></div>
-<div><label>Warna kedua RGB</label><input id="rgbSecond" placeholder="55,65,81"></div>
-<div><label>Preview warna</label><div id="themePreview" class="theme-preview"></div></div>
-</div><br>
-<button class="btn primary" onclick="saveBrandTheme()">💾 Simpan Nama & Tema</button>
-<div id="themeMsg" style="margin-top:12px;font-size:13px"></div>
-</div>
-</div>
-</section>
-</div>
+                <div id="gridUnit" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Unit Card Dinamis -->
+                </div>
+            </section>
 
-<script>
+            <!-- TAB: PENGATURAN -->
+            <section id="tab-pengaturan" class="space-y-6 hidden max-w-2xl">
+                <h2 class="text-2xl font-bold">Panel Pengaturan Sistem</h2>
 
+                <div class="bg-white rounded-xl border shadow-sm p-6 space-y-6">
+                    <!-- Ganti Identitas -->
+                    <div>
+                        <h3 class="text-md font-bold mb-3 text-gray-700">Identitas Rental & Akun</h3>
+                        <form onsubmit="saveSettings(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Nama Rental</label>
+                                <input type="text" id="settingNamaRental" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 border-theme">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Username Login</label>
+                                <input type="text" id="settingUsername" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 border-theme">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Kata Sandi Baru</label>
+                                <input type="password" id="settingPassword" placeholder="Kosongkan jika tidak ingin diubah" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 border-theme">
+                            </div>
 
-function validRGB(v){
- const a=v.split(',').map(x=>parseInt(x.trim(),10));
- return a.length===3 && a.every(n=>Number.isInteger(n)&&n>=0&&n<=255);
-}
-function applyBrandTheme(){
- const name=localStorage.getItem('rental_name')||'TEGUH RENTAL';
- const c1=localStorage.getItem('rental_theme1')||'17,24,39';
- const c2=localStorage.getItem('rental_theme2')||'55,65,81';
- document.getElementById('brandName').textContent=name;
- document.getElementById('pageTitle').textContent=name;
- document.documentElement.style.setProperty('--theme','rgb('+c1+')');
- document.documentElement.style.setProperty('--theme2','rgb('+c2+')');
- if(document.getElementById('rentalName')){
-  rentalName.value=name; rgbMain.value=c1; rgbSecond.value=c2;
-  themePreview.style.background=`linear-gradient(90deg,rgb(${c1}),rgb(${c2}))`;
- }
-}
-function saveBrandTheme(){
- const name=rentalName.value.trim()||'TEGUH RENTAL';
- const c1=rgbMain.value.trim(), c2=rgbSecond.value.trim();
- if(!validRGB(c1)||!validRGB(c2)) return alert('Format RGB harus seperti: 17,24,39');
- localStorage.setItem('rental_name',name);
- localStorage.setItem('rental_theme1',c1);
- localStorage.setItem('rental_theme2',c2);
- applyBrandTheme();
- themeMsg.textContent='Nama rental dan tema berhasil disimpan.';
- setTimeout(()=>themeMsg.textContent='',2500);
-}
-const DEFAULT_USER='admin', DEFAULT_PASS='rental123';
-function getCred(){
- return {
-  user: localStorage.getItem('rental_admin_user') || DEFAULT_USER,
-  pass: localStorage.getItem('rental_admin_pass') || DEFAULT_PASS
- };
-}
-function changeCredentials(){
- const u=document.getElementById('newUser').value.trim();
- const pw=document.getElementById('newPass').value;
- if(u.length<3) return alert('Username minimal 3 karakter.');
- if(pw.length<4) return alert('Password minimal 4 karakter.');
- localStorage.setItem('rental_admin_user',u);
- localStorage.setItem('rental_admin_pass',pw);
- document.getElementById('newUser').value='';
- document.getElementById('newPass').value='';
- document.getElementById('credMsg').textContent='Username dan password berhasil diubah.';
- setTimeout(()=>document.getElementById('credMsg').textContent='',2500);
-}
-function login(){
- const u=document.getElementById('loginUser').value.trim(), p=document.getElementById('loginPass').value;
- const cred=getCred();
- if(u===cred.user && p===cred.pass){
-   sessionStorage.setItem('rental_logged_in','1');
-   document.getElementById('login').style.display='none';
-   document.getElementById('app').style.display='block';
- }else document.getElementById('loginError').textContent='Username atau password salah.';
-}
-function logout(){
- sessionStorage.removeItem('rental_logged_in');
- document.getElementById('app').style.display='none';
- document.getElementById('login').style.display='flex';
- document.getElementById('loginPass').value='';
-}
-window.addEventListener('load',()=>{
- applyBrandTheme();
- if(sessionStorage.getItem('rental_logged_in')==='1'){
-   document.getElementById('login').style.display='none';
-   document.getElementById('app').style.display='block';
- }
-});
+                            <hr class="my-4">
 
-const get=k=>JSON.parse(localStorage.getItem(k)||'[]');
-const set=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
-let rentals=get('rentals'), kendaraan=get('kendaraan'), pelanggan=get('pelanggan');
+                            <!-- Pengaturan Tema RGB -->
+                            <h3 class="text-md font-bold mb-3 text-gray-700">Kombinasi Warna Tema (RGB)</h3>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold mb-1">Red (0-255)</label>
+                                    <input type="number" id="settingColorR" min="0" max="255" required class="w-full px-3 py-2 border rounded-lg" oninput="previewTheme()">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold mb-1">Green (0-255)</label>
+                                    <input type="number" id="settingColorG" min="0" max="255" required class="w-full px-3 py-2 border rounded-lg" oninput="previewTheme()">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold mb-1">Blue (0-255)</label>
+                                    <input type="number" id="settingColorB" min="0" max="255" required class="w-full px-3 py-2 border rounded-lg" oninput="previewTheme()">
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 mt-2">
+                                <span class="text-xs text-gray-500">Preview Warna Tema:</span>
+                                <div id="colorPreviewBox" class="w-10 h-6 rounded border shadow-inner"></div>
+                            </div>
 
-function showTab(id,btn){document.querySelectorAll('section').forEach(x=>x.classList.remove('active-sec'));document.getElementById(id).classList.add('active-sec');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));btn.classList.add('active')}
-function rupiah(n){return new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(n||0)}
-function addRental(){let x={nama:rNama.value,kend:rKend.value,mulai:rMulai.value,selesai:rSelesai.value,harga:+rHarga.value,status:rStatus.value};if(!x.nama||!x.kend)return alert('Nama dan kendaraan wajib diisi');rentals.push(x);set('rentals',rentals);
-let schedules=get('schedules');
-function addSchedule(){
- let x={nama:sNama.value,kend:sKend.value,mulai:sMulai.value,kembali:sKembali.value,harga:+sHarga.value,denda:+sDenda.value};
- if(!x.nama||!x.kend||!x.kembali)return alert('Pelanggan, kendaraan, dan tanggal kembali wajib diisi.');
- schedules.push(x);set('schedules',schedules);
- [sNama,sKend,sMulai,sKembali,sHarga,sDenda].forEach(e=>e.value='');render();
-}
-function scheduleFine(x){
- if(!x.kembali)return 0;
- const today=new Date();today.setHours(0,0,0,0);
- const due=new Date(x.kembali+'T00:00:00');
- const days=Math.max(0,Math.floor((today-due)/86400000));
- return days*(+x.denda||0);
-}
-function delSchedule(i){schedules.splice(i,1);set('schedules',schedules);render();}
-function saveAppearance(){
- const name=(appNameInput.value.trim()||'TEGUH RENTAL');
- localStorage.setItem('rental_app_name',name);
- localStorage.setItem('rental_c1',color1.value);localStorage.setItem('rental_c2',color2.value);localStorage.setItem('rental_c3',color3.value);
- applyAppearance();alert('Nama dan tema berhasil disimpan.');
-}
-function applyAppearance(){
- const name=localStorage.getItem('rental_app_name')||'TEGUH RENTAL';
- const c1=localStorage.getItem('rental_c1')||'#111827',c2=localStorage.getItem('rental_c2')||'#374151',c3=localStorage.getItem('rental_c3')||'#2563eb';
- document.getElementById('brandName').textContent=name;document.getElementById('loginBrand').textContent=name;document.getElementById('dashTitle').textContent=name;
- document.documentElement.style.setProperty('--c1',c1);document.documentElement.style.setProperty('--c2',c2);
- document.documentElement.style.setProperty('--c3',c3);
- if(document.getElementById('appNameInput'))appNameInput.value=name;
- if(document.getElementById('color1')){color1.value=c1;color2.value=c2;color3.value=c3}
-}
+                            <button type="submit" class="w-full py-3 bg-theme text-white font-bold rounded-lg shadow-md transition hover:opacity-90 mt-4">Simpan Perubahan Pengaturan</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
 
-render();
-applyAppearance();['rNama','rKend','rMulai','rSelesai','rHarga'].forEach(id=>document.getElementById(id).value='')}
-let fotoData='';
-function previewFoto(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{fotoData=r.result;fotoPreview.src=fotoData};r.readAsDataURL(f)}
-function saveKend(){
- let idx=+kEdit.value;
- let x={nama:kNama.value,plat:kPlat.value,tahun:kTahun.value,harga:+kHarga.value,foto:fotoData||(idx>=0?kendaraan[idx].foto:'')};
- if(!x.nama)return alert('Nama kendaraan wajib diisi');
- if(idx>=0){kendaraan[idx]=x}else{kendaraan.push(x)}
- set('kendaraan',kendaraan);resetKend();render();
-}
-function editKend(i){
- const x=kendaraan[i];kEdit.value=i;kNama.value=x.nama;kPlat.value=x.plat;kTahun.value=x.tahun;kHarga.value=x.harga;fotoData=x.foto||'';fotoPreview.src=fotoData||'';kendTitle.textContent='Edit Unit Rental';
-}
-function resetKend(){kEdit.value='-';kNama.value='';kPlat.value='';kTahun.value='';kHarga.value='';kFoto.value='';fotoData='';fotoPreview.src='';kendTitle.textContent='Tambah Unit Rental'}
-function addPel(){let x={nama:pNama.value,wa:pWa.value};if(!x.nama)return alert('Nama wajib diisi');pelanggan.push(x);set('pelanggan',pelanggan);render();pNama.value='';pWa.value=''}
-function del(k,i){let a=get(k);a.splice(i,1);set(k,a);if(k==='rentals')rentals=a;if(k==='kendaraan')kendaraan=a;if(k==='pelanggan')pelanggan=a;render()}
-function render(){
-document.getElementById('totalK').textContent=kendaraan.length;document.getElementById('totalR').textContent=rentals.filter(x=>x.status==='Berjalan').length;document.getElementById('totalP').textContent=pelanggan.length;document.getElementById('income').textContent=rupiah(rentals.reduce((a,b)=>a+(+b.harga||0),0));
-rentalTable.innerHTML=rentals.length?`<table><tr><th>Pelanggan</th><th>Kendaraan</th><th>Tanggal</th><th>Harga</th><th>Status</th><th></th></tr>${rentals.map((x,i)=>`<tr><td>${x.nama}</td><td>${x.kend}</td><td>${x.mulai||'-'} s/d ${x.selesai||'-'}</td><td>${rupiah(x.harga)}</td><td><span class="badge">${x.status}</span></td><td><button class="btn danger" onclick="del('rentals',${i})">Hapus</button></td></tr>`).join('')}</table>`:'Belum ada rental.';
-kendTable.innerHTML=kendaraan.length?`<table><tr><th>Foto</th><th>Kendaraan</th><th>Plat</th><th>Tahun</th><th>Harga/hari</th><th>Aksi</th></tr>${kendaraan.map((x,i)=>`<tr><td><img src="${x.foto||''}" style="width:75px;height:50px;object-fit:cover;border-radius:7px;background:#eee"></td><td><b>${x.nama}</b></td><td>${x.plat||'-'}</td><td>${x.tahun||'-'}</td><td>${rupiah(x.harga)}</td><td><button class="btn primary" onclick="editKend(${i})">Edit</button> <button class="btn danger" onclick="del('kendaraan',${i})">Hapus</button></td></tr>`).join('')}</table>`:'Belum ada kendaraan.';
-pelTable.innerHTML=pelanggan.length?`<table><tr><th>Nama</th><th>WhatsApp</th><th></th></tr>${pelanggan.map((x,i)=>`<tr><td>${x.nama}</td><td>${x.wa}</td><td><button class="btn danger" onclick="del('pelanggan',${i})">Hapus</button></td></tr>`).join('')}</table>`:'Belum ada pelanggan.';
-summary.innerHTML=rentals.length?rentals.slice(-5).reverse().map(x=>`<p><b>${x.nama}</b> — ${x.kend} — ${rupiah(x.harga)} — ${x.status}</p>`).join(''):'Belum ada data rental.';scheduleTable.innerHTML=schedules.length?`<table><tr><th>Pelanggan</th><th>Kendaraan</th><th>Kembali</th><th>Denda</th><th>Aksi</th></tr>${schedules.map((x,i)=>{let f=scheduleFine(x);return `<tr><td>${x.nama}</td><td>${x.kend}</td><td>${x.kembali}</td><td><span class="badge ${f?'schedule-overdue':'schedule-ok'}">${rupiah(f)}</span></td><td><button class="btn danger" onclick="delSchedule(${i})">Hapus</button></td></tr>`}).join('')}</table>`:'Belum ada jadwal.'
-}
-render();
-</script>
+        </main>
+    </div>
+
+    <!-- MODAL TAMBAH/EDIT UNIT -->
+    <div id="modalUnit" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-md p-6">
+            <h3 id="modalUnitTitle" class="text-xl font-bold mb-4">Tambah Unit Mobil</h3>
+            <form onsubmit="saveUnit(event)" class="space-y-4">
+                <input type="hidden" id="unitId">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Nama / Merk Mobil</label>
+                    <input type="text" id="unitName" required class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Nomor Polisi</label>
+                    <input type="text" id="unitPlat" required class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Foto Mobil (File Gambar / URL)</label>
+                    <input type="file" id="unitFotoFile" accept="image/*" class="w-full px-3 py-2 border rounded-lg text-sm mb-2" onchange="convertImage(this)">
+                    <input type="hidden" id="unitFotoBase64">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Status Ketersediaan</label>
+                    <select id="unitStatus" class="w-full px-4 py-2 border rounded-lg">
+                        <option value="Tersedia">Tersedia</option>
+                        <option value="Disewa">Disewa</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-2 mt-6">
+                    <button type="button" onclick="closeModalUnit()" class="px-4 py-2 border rounded-lg text-gray-600 font-medium">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-theme text-white font-bold rounded-lg">Simpan Unit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL TAMBAH TRANSAKSI -->
+    <div id="modalTransaksi" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-md p-6">
+            <h3 class="text-xl font-bold mb-4">Tambah Jadwal & Transaksi</h3>
+            <form onsubmit="saveTransaksi(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Nama Penyewa</label>
+                    <input type="text" id="trxPenyewa" required class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Pilih Unit Mobil</label>
+                    <select id="trxUnit" required class="w-full px-4 py-2 border rounded-lg">
+                        <!-- Options unit tersedia -->
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Mulai Sewa</label>
+                        <input type="date" id="trxMulai" required class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Selesai Sewa</label>
+                        <input type="date" id="trxSelesai" required class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Biaya Sewa (Pemasukan)</label>
+                    <input type="number" id="trxBiaya" required class="w-full px-4 py-2 border rounded-lg" placeholder="Contoh: 350000">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Denda / Kekurangan Pembayaran</label>
+                    <input type="number" id="trxDenda" value="0" class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Status Pembayaran</label>
+                    <select id="trxStatusBayar" class="w-full px-4 py-2 border rounded-lg">
+                        <option value="Lunas">Lunas</option>
+                        <option value="Kurang Pembayaran">Kurang Pembayaran</option>
+                        <option value="Ada Denda">Ada Denda</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-2 mt-6">
+                    <button type="button" onclick="closeModalTransaksi()" class="px-4 py-2 border rounded-lg text-gray-600 font-medium">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-theme text-white font-bold rounded-lg">Simpan Transaksi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script Aplikasi -->
+    <script>
+        // Database Lokal (LocalStorage) dengan data bawaan permanen
+        const defaultData = {
+            config: {
+                namaRental: "TEGUH-trans",
+                username: "admin",
+                password: "123",
+                r: 37, g: 99, b: 235
+            },
+            units: [
+                { id: 1, name: "Toyota Hiace Premio", plat: "H 1234 AB", status: "Tersedia", foto: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=400&q=80" },
+                { id: 2, name: "Isuzu Elf Long", plat: "B 5678 CD", status: "Disewa", foto: "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=400&q=80" }
+            ],
+            transactions: [
+                { id: 1, penyewa: "Budi Santoso", unit: "Isuzu Elf Long", mulai: "2026-08-01", selesai: "2026-08-05", biaya: 2500000, denda: 0, statusBayar: "Lunas", statusSewa: "Aktif" }
+            ]
+        };
+
+        let db = JSON.parse(localStorage.getItem('teguh_trans_db')) || defaultData;
+        let loggedInUser = sessionStorage.getItem('teguh_trans_logged');
+
+        function saveDB() {
+            localStorage.setItem('teguh_trans_db', JSON.stringify(db));
+        }
+
+        // Inisialisasi Tema & Tampilan
+        function applyTheme() {
+            let cfg = db.config;
+            document.documentElement.style.setProperty('--theme-r', cfg.r);
+            document.documentElement.style.setProperty('--theme-g', cfg.g);
+            document.documentElement.style.setProperty('--theme-b', cfg.b);
+            document.getElementById('loginBrandTitle').innerText = cfg.namaRental;
+            document.getElementById('sidebarBrandName').innerText = cfg.namaRental;
+        }
+
+        window.onload = function() {
+            applyTheme();
+            if (loggedInUser) {
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('appLayout').classList.remove('hidden');
+                initDashboard();
+            }
+        };
+
+        // Autentikasi
+        function handleLogin(e) {
+            e.preventDefault();
+            let u = document.getElementById('loginUser').value;
+            let p = document.getElementById('loginPass').value;
+            if (u === db.config.username && p === db.config.password) {
+                sessionStorage.setItem('teguh_trans_logged', u);
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('appLayout').classList.remove('hidden');
+                initDashboard();
+            } else {
+                alert('Username atau Kata Sandi salah!');
+            }
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('teguh_trans_logged');
+            location.reload();
+        }
+
+        // Navigasi Tab
+        function switchTab(tabId) {
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-gray-100', 'text-theme', 'font-bold'));
+            event.currentTarget.classList.add('bg-gray-100', 'text-theme', 'font-bold');
+
+            if(tabId === 'dashboard') initDashboard();
+            if(tabId === 'unit') renderUnits();
+            if(tabId === 'transaksi') renderPembukuan();
+            if(tabId === 'pengaturan') initSettings();
+        }
+
+        // Dasbor & Statistik
+        function initDashboard() {
+            document.getElementById('currentDate').innerText = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            
+            let tersedia = db.units.filter(u => u.status === 'Tersedia').length;
+            let disewa = db.units.filter(u => u.status === 'Disewa').length;
+            
+            let totalPemasukan = db.transactions.reduce((acc, curr) => acc + Number(curr.biaya), 0);
+            let totalDendaKekurangan = db.transactions.reduce((acc, curr) => acc + Number(curr.denda), 0);
+
+            document.getElementById('statMobilTersedia').innerText = tersedia;
+            document.getElementById('statSisaMobil').innerText = disewa;
+            document.getElementById('statPemasukan').innerText = 'Rp ' + totalPemasukan.toLocaleString('id-ID');
+            document.getElementById('statDendaKekurangan').innerText = 'Rp ' + totalDendaKekurangan.toLocaleString('id-ID');
+
+            // Render Jadwal
+            let tbody = document.getElementById('tableJadwalBody');
+            tbody.innerHTML = '';
+            db.transactions.forEach(t => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="p-3 font-semibold">${t.penyewa}</td>
+                        <td class="p-3">${t.unit}</td>
+                        <td class="p-3 text-xs text-gray-500">${t.mulai} s/d ${t.selesai}</td>
+                        <td class="p-3"><span class="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs font-bold">${t.statusBayar}</span></td>
+                        <td class="p-3 text-red-600 font-medium">Rp ${Number(t.denda).toLocaleString('id-ID')}</td>
+                        <td class="p-3">
+                            <button onclick="hapusTransaksi(${t.id})" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Kelola Unit
+        function renderUnits() {
+            let grid = document.getElementById('gridUnit');
+            grid.innerHTML = '';
+            db.units.forEach(u => {
+                grid.innerHTML += `
+                    <div class="bg-white rounded-xl border shadow-sm overflow-hidden flex flex-col justify-between">
+                        <img src="${u.foto || 'https://via.placeholder.com/400x200?text=Mobil'}" class="w-full h-40 object-cover">
+                        <div class="p-4 flex-1">
+                            <div class="flex justify-between items-start">
+                                <h4 class="font-bold text-lg">${u.name}</h4>
+                                <span class="px-2 py-0.5 text-xs rounded font-bold ${u.status === 'Tersedia' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">${u.status}</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1"><i class="fa-solid fa-id-card"></i> ${u.plat}</p>
+                        </div>
+                        <div class="p-4 border-t bg-gray-50 flex justify-end gap-2">
+                            <button onclick="editUnit(${u.id})" class="px-3 py-1 bg-gray-200 text-xs font-bold rounded">Edit</button>
+                            <button onclick="deleteUnit(${u.id})" class="px-3 py-1 bg-red-100 text-red-600 text-xs font-bold rounded">Hapus</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function openModalUnit() {
+            document.getElementById('modalUnitTitle').innerText = "Tambah Unit Mobil";
+            document.getElementById('unitId').value = '';
+            document.getElementById('unitName').value = '';
+            document.getElementById('unitPlat').value = '';
+            document.getElementById('unitFotoBase64').value = '';
+            document.getElementById('unitFotoFile').value = '';
+            document.getElementById('unitStatus').value = 'Tersedia';
+            document.getElementById('modalUnit').classList.remove('hidden');
+        }
+
+        function closeModalUnit() { document.getElementById('modalUnit').classList.add('hidden'); }
+
+        function convertImage(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('unitFotoBase64').value = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveUnit(e) {
+            e.preventDefault();
+            let id = document.getElementById('unitId').value;
+            let name = document.getElementById('unitName').value;
+            let plat = document.getElementById('unitPlat').value;
+            let status = document.getElementById('unitStatus').value;
+            let foto = document.getElementById('unitFotoBase64').value;
+
+            if (id) {
+                let unit = db.units.find(u => u.id == id);
+                unit.name = name;
+                unit.plat = plat;
+                unit.status = status;
+                if(foto) unit.foto = foto;
+            } else {
+                let newId = db.units.length > 0 ? db.units[db.units.length - 1].id + 1 : 1;
+                db.units.push({ id: newId, name, plat, status, foto: foto || 'https://via.placeholder.com/400x200?text=Mobil' });
+            }
+            saveDB();
+            closeModalUnit();
+            renderUnits();
+        }
+
+        function editUnit(id) {
+            let u = db.units.find(item => item.id == id);
+            document.getElementById('modalUnitTitle').innerText = "Edit Unit Mobil";
+            document.getElementById('unitId').value = u.id;
+            document.getElementById('unitName').value = u.name;
+            document.getElementById('unitPlat').value = u.plat;
+            document.getElementById('unitStatus').value = u.status;
+            document.getElementById('unitFotoBase64').value = u.foto;
+            document.getElementById('modalUnit').classList.remove('hidden');
+        }
+
+        function deleteUnit(id) {
+            if(confirm('Yakin ingin menghapus unit ini?')) {
+                db.units = db.units.filter(u => u.id != id);
+                saveDB();
+                renderUnits();
+            }
+        }
+
+        // Transaksi & Pembukuan
+        function openModalTransaksi() {
+            let select = document.getElementById('trxUnit');
+            select.innerHTML = '';
+            db.units.filter(u => u.status === 'Tersedia').forEach(u => {
+                select.innerHTML += `<option value="${u.name}">${u.name} (${u.plat})</option>`;
+            });
+            document.getElementById('modalTransaksi').classList.remove('hidden');
+        }
+
+        function closeModalTransaksi() { document.getElementById('modalTransaksi').classList.add('hidden'); }
+
+        function saveTransaksi(e) {
+            e.preventDefault();
+            let penyewa = document.getElementById('trxPenyewa').value;
+            let unit = document.getElementById('trxUnit').value;
+            let mulai = document.getElementById('trxMulai').value;
+            let selesai = document.getElementById('trxSelesai').value;
+            let biaya = document.getElementById('trxBiaya').value;
+            let denda = document.getElementById('trxDenda').value;
+            let statusBayar = document.getElementById('trxStatusBayar').value;
+
+            let newId = db.transactions.length > 0 ? db.transactions[db.transactions.length - 1].id + 1 : 1;
+            db.transactions.push({ id: newId, penyewa, unit, mulai, selesai, biaya, denda, statusBayar });
+
+            // Ubah status mobil menjadi disewa
+            let targetUnit = db.units.find(u => u.name === unit);
+            if(targetUnit) targetUnit.status = "Disewa";
+
+            saveDB();
+            closeModalTransaksi();
+            initDashboard();
+        }
+
+        function hapusTransaksi(id) {
+            if(confirm('Hapus riwayat transaksi ini?')) {
+                db.transactions = db.transactions.filter(t => t.id != id);
+                saveDB();
+                initDashboard();
+            }
+        }
+
+        function renderPembukuan() {
+            let tbody = document.getElementById('tablePembukuanBody');
+            tbody.innerHTML = '';
+            db.transactions.forEach(t => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="p-3 text-xs text-gray-500">${t.mulai}</td>
+                        <td class="p-3 font-semibold">${t.penyewa}</td>
+                        <td class="p-3">${t.unit}</td>
+                        <td class="p-3 text-emerald-600 font-bold">Rp ${Number(t.biaya).toLocaleString('id-ID')}</td>
+                        <td class="p-3 text-red-600 font-bold">Rp ${Number(t.denda).toLocaleString('id-ID')}</td>
+                        <td class="p-3"><span class="px-2 py-1 bg-gray-100 rounded text-xs font-bold">${t.statusBayar}</span></td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Unduh Laporan Pembukuan
+        function downloadLaporan() {
+            let csv = "ID,Tanggal Mulai,Penyewa,Unit,Biaya Sewa,Denda/Kekurangan,Status Pembayaran\n";
+            db.transactions.forEach(t => {
+                csv += `"${t.id}","${t.mulai}","${t.penyewa}","${t.unit}","${t.biaya}","${t.denda}","${t.statusBayar}"\n`;
+            });
+            let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `Laporan_Pembukuan_${db.config.namaRental}_${new Date().toISOString().slice(0,7)}.csv`;
+            link.click();
+        }
+
+        // Pengaturan & Tema RGB
+        function initSettings() {
+            let cfg = db.config;
+            document.getElementById('settingNamaRental').value = cfg.namaRental;
+            document.getElementById('settingUsername').value = cfg.username;
+            document.getElementById('settingColorR').value = cfg.r;
+            document.getElementById('settingColorG').value = cfg.g;
+            document.getElementById('settingColorB').value = cfg.b;
+            previewTheme();
+        }
+
+        function previewTheme() {
+            let r = document.getElementById('settingColorR').value || 0;
+            let g = document.getElementById('settingColorG').value || 0;
+            let b = document.getElementById('settingColorB').value || 0;
+            document.getElementById('colorPreviewBox').style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function saveSettings(e) {
+            e.preventDefault();
+            db.config.namaRental = document.getElementById('settingNamaRental').value;
+            db.config.username = document.getElementById('settingUsername').value;
+            let newPass = document.getElementById('settingPassword').value;
+            if(newPass) db.config.password = newPass;
+
+            db.config.r = Number(document.getElementById('settingColorR').value);
+            db.config.g = Number(document.getElementById('settingColorG').value);
+            db.config.b = Number(document.getElementById('settingColorB').value);
+
+            saveDB();
+            applyTheme();
+            alert('Pengaturan berhasil diperbarui!');
+        }
+    </script>
 </body>
-</html></div>
+</html>
