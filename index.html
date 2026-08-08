@@ -150,10 +150,10 @@ restoreFile.onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JS
 backupBtn.onclick=exportBackup;
 document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
 function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));document.getElementById(p).classList.remove('hidden');document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===p));pageTitle.textContent={dashboard:'Dasbor',units:'Unit Kendaraan',schedule:'Jadwal Rental',finance:'Pembukuan',settings:'Pengaturan'}[p];if(p==='settings'){rentalName.value=state.settings.name;newUser.value=state.settings.username;newPass.value=state.settings.password;red.value=state.settings.r;green.value=state.settings.g;blue.value=state.settings.b}}
-loginForm.onsubmit=e=>{e.preventDefault();if(loginUser.value===state.settings.username&&loginPass.value===state.settings.password){login.classList.add('hidden');app.classList.remove('hidden');sessionStorage.setItem('teguhLogin','1');render()}else loginError.textContent='Username atau kata sandi salah.'}
+loginForm.onsubmit=e=>{e.preventDefault();if(loginUser.value===state.settings.username&&loginPass.value===state.settings.password){loginError.textContent='';login.classList.add('hidden');app.classList.remove('hidden');render()}else loginError.textContent='Username atau kata sandi salah.'}
 logout.onclick=()=>{sessionStorage.removeItem('teguhLogin');app.classList.add('hidden');login.classList.remove('hidden')}
 today.textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-(async()=>{await load();if(sessionStorage.getItem('teguhLogin')==='1'){login.classList.add('hidden');app.classList.remove('hidden')}render()})();
+(async()=>{await load();sessionStorage.removeItem('teguhLogin');login.classList.remove('hidden');app.classList.add('hidden');loginPass.value='';render()})();
 </script>
 </body>
 </html>
